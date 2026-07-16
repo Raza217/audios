@@ -137,7 +137,7 @@ async function saveResponse(payload) {
 function renderIntro() {
   app.innerHTML = `
     ${waveHTML(true, 40, 48)}
-    <h1 style="font-size:38px;line-height:1.15;margin:24px 0 12px">In welchem Audio ist die deutsche Aussprache korrekter?</h1>
+    <h1 style="font-size:38px;line-height:1.15;margin:24px 0 12px">In welchem Audio ist die deutsche Aussprache besser?</h1>
     <p style="color:var(--ink-soft);font-size:17px;line-height:1.6;margin-bottom:8px">
       Wir vergleichen zwei Text-to-Speech-Systeme. Du hörst ${order.length} kurze Paare —
       jeweils Variante <strong>A</strong> und <strong>B</strong> mit demselben Satz.
@@ -146,7 +146,7 @@ function renderIntro() {
     <p style="color:var(--ink-soft);font-size:17px;line-height:1.6">
       Bewerte pro Paar auf einer Skala von <strong>−3</strong> (A deutlich besser)
       über <strong>0</strong> (kein Unterschied) bis <strong>+3</strong> (B deutlich besser),
-      in welchem Audio die deutsche Aussprache korrekter ist. Dauer: ca. 8–10 Minuten. Die Teilnahme ist anonym.
+      in welchem Audio die deutsche Aussprache besser ist. Dauer: ca. 8–10 Minuten. Die Teilnahme ist anonym.
     </p>
     <button class="btn-primary" style="margin-top:28px" onclick="startSurvey()">Umfrage starten →</button>
     <p class="note" style="margin-top:20px">🎧 Kopfhörer empfohlen</p>`;
@@ -236,8 +236,8 @@ function updatePlayUI() {
 async function next() {
   stopAudio();
   const s = order[step];
-  // Modellzentrierter Score: positiv = getuntes Modell korrekter.
-  // rating: negativ = präsentiertes A korrekter, positiv = präsentiertes B korrekter.
+  // Modellzentrierter Score: positiv = getuntes Modell besser.
+  // rating: negativ = präsentiertes A besser, positiv = präsentiertes B besser.
   let score = null;
   if (s.type === "compare") score = s.tunedShownAs === "B" ? rating : -rating;
   answers.push({ sampleId: s.id, type: s.type, tunedShownAs: s.tunedShownAs, swap: s.swap, rating, score });
