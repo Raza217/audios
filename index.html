@@ -20,16 +20,12 @@
   header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: var(--card); border-bottom: 1px solid var(--line); }
   header .brand { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 600; }
   header .brand svg { color: var(--accent); }
-  .admin-link { font-size: 12px; color: var(--muted); background: none; border: none; cursor: pointer; font-family: inherit; }
-  .admin-link:hover { color: var(--ink-soft); }
 
-  main { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; }
-  main.wide { max-width: 900px; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
 
   button { font-family: 'Inter', system-ui, sans-serif; }
   .btn-primary { padding: 14px 32px; font-size: 16px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
   .btn-primary:disabled { background: #C6CBD4; cursor: not-allowed; }
-  .btn-ghost { padding: 9px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); cursor: pointer; font-size: 14px; font-weight: 500; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; }
 
   .wave { display: flex; align-items: center; gap: 2px; }
   .wave span { width: 3px; border-radius: 2px; background: var(--accent); opacity: .45; transform-origin: bottom; }
@@ -37,45 +33,32 @@
   @keyframes wf { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 
-  .sentence { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 12px; padding: 14px 18px; font-size: 16px; line-height: 1.5; margin-bottom: 20px; color: var(--ink); font-style: italic; }
+  .sentence { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 12px; padding: 14px 18px; font-size: 17px; line-height: 1.55; margin-bottom: 20px; color: var(--ink); font-style: italic; }
 
   .pair { display: flex; gap: 16px; flex-wrap: wrap; }
-  .audio-card { flex: 1; min-width: 240px; background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 20px; transition: border-color .15s, background .15s; }
-  .audio-card.selected { border-color: var(--accent); background: var(--accent-soft); }
+  .audio-card { flex: 1; min-width: 240px; background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 20px; }
   .audio-card .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .audio-card .letter { font-family: 'Fraunces', Georgia, serif; font-size: 28px; font-weight: 600; }
   .play-btn { width: 48px; height: 48px; border-radius: 999px; border: none; cursor: pointer; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; }
   .play-btn.playing { background: var(--ink); }
-  .choose-btn { margin-top: 16px; width: 100%; padding: 10px 0; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; font-weight: 600; font-size: 14px; color: var(--ink); }
-  .audio-card.selected .choose-btn { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  .equal-btn { margin-top: 14px; padding: 9px 18px; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; font-size: 14px; font-weight: 500; color: var(--ink-soft); }
-  .equal-btn.selected { background: var(--ink); border-color: var(--ink); color: #fff; }
-
-  .rating-box { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
-  input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .scale-box { margin-top: 24px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .scale-row { display: flex; gap: 6px; justify-content: space-between; margin-top: 14px; }
+  .scale-btn { flex: 1; min-width: 0; padding: 12px 0; border-radius: 10px; border: 1.5px solid var(--line); background: transparent; cursor: pointer; font-size: 15px; font-weight: 600; color: var(--ink); }
+  .scale-btn.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .scale-btn.zero.selected { background: var(--ink); border-color: var(--ink); }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-top: 8px; gap: 8px; }
+  .scale-labels span { flex: 1; }
+  .scale-labels span:nth-child(2) { text-align: center; }
+  .scale-labels span:last-child { text-align: right; }
 
   .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
   .progress-track { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--accent); transition: width .3s; }
 
-  .stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
-  .stat { flex: 1 1 150px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
-  .stat .value { font-family: 'Fraunces', Georgia, serif; font-size: 30px; font-weight: 600; }
-  .stat .label { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
-  .table { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
-  .trow { display: grid; grid-template-columns: .7fr 2.2fr 2fr .7fr .7fr; gap: 8px; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); font-size: 14px; }
-  .trow.head { font-size: 12px; font-weight: 600; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .5px; padding: 12px 20px; }
-  .trow:last-child { border-bottom: none; }
-  .bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--line); }
-  .bar div { height: 100%; }
-  .filter-toggle { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-soft); cursor: pointer; user-select: none; }
-
   .error-banner { background: #FEF2F2; border: 1px solid var(--red); border-radius: 12px; padding: 16px; color: var(--red); margin-bottom: 20px; font-size: 14px; }
-  .note { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
-  input[type="password"] { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--line); font-size: 15px; font-family: inherit; outline: none; }
-  input[type="password"].wrong { border-color: var(--red); }
-  @media (max-width: 620px) { .trow { grid-template-columns: 1fr; gap: 4px; } .trow.head { display: none; } }
+  .note { font-size: 12px; color: var(--muted); margin-top: 14px; }
+  @media (max-width: 560px) { .scale-btn { font-size: 13px; padding: 10px 0; } }
 </style>
 </head>
 <body>
@@ -96,9 +79,11 @@ const CFG = window.SURVEY_CONFIG;
 const app = document.getElementById("app");
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 
-/* ---------------- Reihenfolge pro Teilnehmer:in mischen ----------------
-   Die A/B-Zuordnung der Dateien ist fest (aus eurer key.csv) — gemischt
-   wird nur die Reihenfolge der Items, Checks landen nicht direkt am Anfang. */
+/* ---------------- Reihenfolge & Positionsrandomisierung ----------------
+   XAB-Design mit eingeblendetem Transkript: Pro Teilnehmer:in wird
+   (1) die Item-Reihenfolge gemischt (Checks verteilt, nicht am Anfang) und
+   (2) pro Satz zufällig entschieden, ob die Dateien vertauscht als
+       A/B präsentiert werden (Positionsrandomisierung).                  */
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -110,17 +95,21 @@ function shuffle(arr) {
 const order = (() => {
   const compare = shuffle(CFG.items.filter((i) => i.type === "compare"));
   const checks = shuffle(CFG.items.filter((i) => i.type === "attention"));
-  // Checks gleichmäßig ab dem 2. Drittel einstreuen
   const result = compare.slice();
   checks.forEach((c, k) => {
     const pos = Math.min(result.length, Math.floor((k + 1) * (result.length + 1) / (checks.length + 1)) + 2);
     result.splice(Math.min(pos, result.length), 0, c);
   });
-  return result;
+  return result.map((i) => {
+    const swap = Math.random() < 0.5; // Präsentation A/B vertauschen?
+    // Auf welcher PRÄSENTIERTEN Seite liegt das getunte Modell?
+    let tunedShownAs = null;
+    if (i.type === "compare") tunedShownAs = swap ? (i.ft === "A" ? "B" : "A") : i.ft;
+    return { ...i, swap, tunedShownAs };
+  });
 })();
 
-let step = -1, answers = [], choice = null, rating = 5, playing = null, audio = null;
-let adminAuthed = false, adminTimer = null, lastData = null, filterAttention = true;
+let step = -1, answers = [], rating = null, playing = null, audio = null;
 
 function waveHTML(playing, bars = 28, height = 36, color = "var(--accent)") {
   let spans = "";
@@ -135,7 +124,6 @@ const pauseIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="current
 
 function stopAudio() { if (audio) { audio.pause(); audio = null; } playing = null; }
 
-/* ---------------- Supabase REST ---------------- */
 async function saveResponse(payload) {
   const res = await fetch(`${CFG.supabaseUrl}/rest/v1/responses`, {
     method: "POST",
@@ -144,93 +132,91 @@ async function saveResponse(payload) {
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
 }
-/* ---------------- Teilnehmer-Ansichten ---------------- */
+
+/* ---------------- Ansichten ---------------- */
 function renderIntro() {
-  
-  app.className = "";
   app.innerHTML = `
     ${waveHTML(true, 40, 48)}
-    <h1 style="font-size:40px;line-height:1.15;margin:24px 0 12px">Welche Stimme klingt besser?</h1>
+    <h1 style="font-size:38px;line-height:1.15;margin:24px 0 12px">In welchem Audio ist die deutsche Aussprache korrekter?</h1>
     <p style="color:var(--ink-soft);font-size:17px;line-height:1.6;margin-bottom:8px">
-      Wir vergleichen zwei Text-to-Speech-Modelle. Du hörst ${order.length} kurze Paare —
+      Wir vergleichen zwei Text-to-Speech-Systeme. Du hörst ${order.length} kurze Paare —
       jeweils Variante <strong>A</strong> und <strong>B</strong> mit demselben Satz.
-      Der gesprochene Satz wird dir dabei angezeigt.
+      Der gesprochene Satz wird dir angezeigt.
     </p>
     <p style="color:var(--ink-soft);font-size:17px;line-height:1.6">
-      Wähle pro Paar, welche Variante natürlicher klingt, und bewerte, wie deutlich der
-      Unterschied ist. Manche Paare können auch identisch klingen — dann wähle
-      „Kein hörbarer Unterschied". Dauer: ca. 8–10 Minuten. Die Teilnahme ist anonym.
+      Bewerte pro Paar auf einer Skala von <strong>−3</strong> (A deutlich korrekter)
+      über <strong>0</strong> (kein Unterschied) bis <strong>+3</strong> (B deutlich korrekter),
+      in welchem Audio die deutsche Aussprache korrekter ist. Manche Paare können identisch
+      klingen — dann wähle 0. Dauer: ca. 8–10 Minuten. Die Teilnahme ist anonym.
     </p>
     <button class="btn-primary" style="margin-top:28px" onclick="startSurvey()">Umfrage starten →</button>
     <p class="note" style="margin-top:20px">🎧 Kopfhörer empfohlen</p>`;
 }
-function startSurvey() { step = 0; choice = null; rating = 5; renderQuestion(); }
+function startSurvey() { step = 0; rating = null; renderQuestion(); }
 
 function renderQuestion() {
   stopAudio();
   const s = order[step];
   const progress = (step / order.length) * 100;
-  app.className = "";
   app.innerHTML = `
     <div class="progress-row">
       <span style="font-size:13px;font-weight:600;color:var(--ink-soft);white-space:nowrap">${step + 1} / ${order.length}</span>
       <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
     </div>
-    <h2 style="font-size:26px;margin-bottom:6px">Höre beide Varianten an</h2>
+    <h2 style="font-size:24px;margin-bottom:6px">Höre beide Varianten an</h2>
     <p style="color:var(--ink-soft);font-size:15px;margin:0 0 16px">Beide sprechen diesen Satz — du kannst beliebig oft abspielen:</p>
     <div class="sentence">„${esc(s.text)}"</div>
     <div class="pair">
       ${["A", "B"].map((L) => `
-        <div class="audio-card ${choice === L ? "selected" : ""}" id="card${L}">
+        <div class="audio-card">
           <div class="top">
             <span class="letter">${L}</span>
-            <button class="play-btn ${playing === L ? "playing" : ""}" onclick="togglePlay('${L}')" aria-label="Variante ${L} abspielen oder pausieren" id="play${L}">${playing === L ? pauseIcon : playIcon}</button>
+            <button class="play-btn" onclick="togglePlay('${L}')" aria-label="Variante ${L} abspielen oder pausieren" id="play${L}">${playIcon}</button>
           </div>
-          <div id="wave${L}">${waveHTML(false, 28, 36, choice === L ? "var(--accent)" : "#98A2B3")}</div>
-          <button class="choose-btn" onclick="setChoice('${L}')">${choice === L ? "✓ Klingt besser" : L + " klingt besser"}</button>
+          <div id="wave${L}">${waveHTML(false, 28, 36, "#98A2B3")}</div>
         </div>`).join("")}
     </div>
-    <button class="equal-btn ${choice === "equal" ? "selected" : ""}" onclick="setChoice('equal')">Kein hörbarer Unterschied</button>
-    <div id="ratingSlot"></div>
+
+    <div class="scale-box">
+      <p style="font-size:15px;font-weight:600">In welchem Audio ist die deutsche Aussprache korrekter?</p>
+      <div class="scale-row" role="radiogroup" aria-label="Bewertung von minus 3 bis plus 3">
+        ${[-3, -2, -1, 0, 1, 2, 3].map((v) => `
+          <button class="scale-btn ${v === 0 ? "zero" : ""} ${rating === v ? "selected" : ""}"
+            onclick="setRating(${v})" role="radio" aria-checked="${rating === v}">
+            ${v > 0 ? "+" + v : v}
+          </button>`).join("")}
+      </div>
+      <div class="scale-labels">
+        <span>← A deutlich korrekter</span>
+        <span>kein Unterschied</span>
+        <span>B deutlich korrekter →</span>
+      </div>
+    </div>
+
     <div style="margin-top:28px">
-      <button class="btn-primary" id="nextBtn" onclick="next()" ${choice ? "" : "disabled"}>
+      <button class="btn-primary" id="nextBtn" onclick="next()" ${rating === null ? "disabled" : ""}>
         ${step + 1 === order.length ? "Abschließen" : "Weiter"} →
       </button>
     </div>`;
-  renderRating();
 }
 
-function renderRating() {
-  const slot = document.getElementById("ratingSlot");
-  if (choice !== "A" && choice !== "B") { slot.innerHTML = ""; return; }
-  slot.innerHTML = `
-    <div class="rating-box">
-      <p style="font-size:15px;font-weight:600;margin-bottom:4px">Wie deutlich klingt ${choice} besser?</p>
-      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:16px">1 = kaum besser · 10 = deutlich besser</p>
-      <input type="range" min="1" max="10" value="${rating}" oninput="rating=+this.value;document.getElementById('rval').textContent=this.value" aria-label="Bewertung von 1 bis 10">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)">
-        <span>1</span><span id="rval" style="font-size:20px;font-weight:700;color:var(--accent)">${rating}</span><span>10</span>
-      </div>
-    </div>`;
-}
-
-function setChoice(c) {
-  choice = c;
-  ["A", "B"].forEach((L) => {
-    const card = document.getElementById("card" + L);
-    card.classList.toggle("selected", choice === L);
-    card.querySelector(".choose-btn").textContent = choice === L ? "✓ Klingt besser" : L + " klingt besser";
+function setRating(v) {
+  rating = v;
+  document.querySelectorAll(".scale-btn").forEach((b, idx) => {
+    b.classList.toggle("selected", idx - 3 === v);
+    b.setAttribute("aria-checked", idx - 3 === v);
   });
-  document.querySelector(".equal-btn").classList.toggle("selected", c === "equal");
   document.getElementById("nextBtn").disabled = false;
-  renderRating();
 }
 
 function togglePlay(L) {
   const s = order[step];
   if (playing === L) { stopAudio(); updatePlayUI(); return; }
   stopAudio();
-  const url = L === "A" ? s.a : s.b;
+  // Positionsrandomisierung: bei swap werden die Dateien vertauscht präsentiert
+  const fileForA = s.swap ? s.b : s.a;
+  const fileForB = s.swap ? s.a : s.b;
+  const url = L === "A" ? fileForA : fileForB;
   audio = new Audio(url);
   audio.onended = () => { playing = null; updatePlayUI(); };
   audio.onerror = () => { playing = null; updatePlayUI(); alert("Audio-Datei konnte nicht geladen werden: " + url); };
@@ -244,20 +230,19 @@ function updatePlayUI() {
     if (!btn) return;
     btn.classList.toggle("playing", playing === L);
     btn.innerHTML = playing === L ? pauseIcon : playIcon;
-    document.getElementById("wave" + L).innerHTML = waveHTML(playing === L, 28, 36, choice === L ? "var(--accent)" : "#98A2B3");
+    document.getElementById("wave" + L).innerHTML = waveHTML(playing === L, 28, 36, "#98A2B3");
   });
 }
 
 async function next() {
   stopAudio();
   const s = order[step];
-  // Buchstabe → Modell auflösen (ft = Seite des getunten Modells lt. key.csv)
-  let resolved;
-  if (choice === "equal") resolved = "equal";
-  else if (s.type === "attention") resolved = "identical-" + choice; // sollte nicht passieren, wird als nicht bestanden gewertet
-  else resolved = choice === s.ft ? "tuned" : "baseline";
-  answers.push({ sampleId: s.id, type: s.type, letter: choice, choice: resolved, rating: choice === "equal" ? null : rating });
-  choice = null; rating = 5;
+  // Modellzentrierter Score: positiv = getuntes Modell korrekter.
+  // rating: negativ = präsentiertes A korrekter, positiv = präsentiertes B korrekter.
+  let score = null;
+  if (s.type === "compare") score = s.tunedShownAs === "B" ? rating : -rating;
+  answers.push({ sampleId: s.id, type: s.type, tunedShownAs: s.tunedShownAs, swap: s.swap, rating, score });
+  rating = null;
 
   if (step + 1 < order.length) { step++; renderQuestion(); return; }
 
