@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>TTS-Hörstudie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F6F8; --card: #FFFFFF; --ink: #161B26; --ink-soft: #5A6372;
+    --line: #E3E7EC; --accent: #4338CA; --accent-soft: #EEF0FF;
+    --amber: #D97706; --green: #0E9F6E; --red: #DC2626; --muted: #98A2B3;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
+  h1, h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; }
+
+  header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: var(--card); border-bottom: 1px solid var(--line); }
+  header .brand { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 600; }
+  header .brand svg { color: var(--accent); }
+  .admin-link { font-size: 12px; color: var(--muted); background: none; border: none; cursor: pointer; font-family: inherit; }
+  .admin-link:hover { color: var(--ink-soft); }
+
+  main { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; }
+  main.wide { max-width: 900px; }
+
+  button { font-family: 'Inter', system-ui, sans-serif; }
+  .btn-primary { padding: 14px 32px; font-size: 16px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary:disabled { background: #C6CBD4; cursor: not-allowed; }
+  .btn-ghost { padding: 9px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); cursor: pointer; font-size: 14px; font-weight: 500; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; }
+
+  .wave { display: flex; align-items: center; gap: 2px; }
+  .wave span { width: 3px; border-radius: 2px; background: var(--accent); opacity: .45; transform-origin: bottom; }
+  .wave.playing span { opacity: 1; animation: wf .9s ease-in-out infinite alternate; }
+  @keyframes wf { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+
+  .sentence { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 12px; padding: 14px 18px; font-size: 16px; line-height: 1.5; margin-bottom: 20px; color: var(--ink); font-style: italic; }
+
+  .pair { display: flex; gap: 16px; flex-wrap: wrap; }
+  .audio-card { flex: 1; min-width: 240px; background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 20px; transition: border-color .15s, background .15s; }
+  .audio-card.selected { border-color: var(--accent); background: var(--accent-soft); }
+  .audio-card .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .audio-card .letter { font-family: 'Fraunces', Georgia, serif; font-size: 28px; font-weight: 600; }
+  .play-btn { width: 48px; height: 48px; border-radius: 999px; border: none; cursor: pointer; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; }
+  .play-btn.playing { background: var(--ink); }
+  .choose-btn { margin-top: 16px; width: 100%; padding: 10px 0; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; font-weight: 600; font-size: 14px; color: var(--ink); }
+  .audio-card.selected .choose-btn { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .equal-btn { margin-top: 14px; padding: 9px 18px; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; font-size: 14px; font-weight: 500; color: var(--ink-soft); }
+  .equal-btn.selected { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+  .rating-box { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+  .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .progress-track { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width .3s; }
+
+  .stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat { flex: 1 1 150px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .stat .value { font-family: 'Fraunces', Georgia, serif; font-size: 30px; font-weight: 600; }
+  .stat .label { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+  .table { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .trow { display: grid; grid-template-columns: .7fr 2.2fr 2fr .7fr .7fr; gap: 8px; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .trow.head { font-size: 12px; font-weight: 600; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .5px; padding: 12px 20px; }
+  .trow:last-child { border-bottom: none; }
+  .bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--line); }
+  .bar div { height: 100%; }
+  .filter-toggle { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-soft); cursor: pointer; user-select: none; }
+
+  .error-banner { background: #FEF2F2; border: 1px solid var(--red); border-radius: 12px; padding: 16px; color: var(--red); margin-bottom: 20px; font-size: 14px; }
+  .note { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
+  input[type="password"] { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--line); font-size: 15px; font-family: inherit; outline: none; }
+  input[type="password"].wrong { border-color: var(--red); }
+  @media (max-width: 620px) { .trow { grid-template-columns: 1fr; gap: 4px; } .trow.head { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+    TTS-Hörstudie
+  </div>
+</header>
+
+<main id="app"></main>
+
+<script src="config.js"></script>
+<script>
+"use strict";
+const CFG = window.SURVEY_CONFIG;
+const app = document.getElementById("app");
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+/* ---------------- Reihenfolge pro Teilnehmer:in mischen ----------------
+   Die A/B-Zuordnung der Dateien ist fest (aus eurer key.csv) — gemischt
+   wird nur die Reihenfolge der Items, Checks landen nicht direkt am Anfang. */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+const order = (() => {
+  const compare = shuffle(CFG.items.filter((i) => i.type === "compare"));
+  const checks = shuffle(CFG.items.filter((i) => i.type === "attention"));
+  // Checks gleichmäßig ab dem 2. Drittel einstreuen
+  const result = compare.slice();
+  checks.forEach((c, k) => {
+    const pos = Math.min(result.length, Math.floor((k + 1) * (result.length + 1) / (checks.length + 1)) + 2);
+    result.splice(Math.min(pos, result.length), 0, c);
+  });
+  return result;
+})();
+
+let step = -1, answers = [], choice = null, rating = 5, playing = null, audio = null;
+let adminAuthed = false, adminTimer = null, lastData = null, filterAttention = true;
+
+function waveHTML(playing, bars = 28, height = 36, color = "var(--accent)") {
+  let spans = "";
+  for (let i = 0; i < bars; i++) {
+    const h = 25 + 75 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * 0.6));
+    spans += `<span style="height:${h.toFixed(0)}%;background:${color};animation-delay:${(i * 0.05).toFixed(2)}s"></span>`;
+  }
+  return `<div class="wave ${playing ? "playing" : ""}" style="height:${height}px" aria-hidden="true">${spans}</div>`;
+}
+const playIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-left:2px"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>';
+const pauseIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="4" height="16"></rect><rect x="15" y="4" width="4" height="16"></rect></svg>';
+
+function stopAudio() { if (audio) { audio.pause(); audio = null; } playing = null; }
+
+/* ---------------- Supabase REST ---------------- */
+async function saveResponse(payload) {
+  const res = await fetch(`${CFG.supabaseUrl}/rest/v1/responses`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": CFG.supabaseAnonKey, "Authorization": `Bearer ${CFG.supabaseAnonKey}`, "Prefer": "return=minimal" },
+    body: JSON.stringify({ answers: payload }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+}
+/* ---------------- Teilnehmer-Ansichten ---------------- */
+function renderIntro() {
+  
+  app.className = "";
+  app.innerHTML = `
+    ${waveHTML(true, 40, 48)}
+    <h1 style="font-size:40px;line-height:1.15;margin:24px 0 12px">Welche Stimme klingt besser?</h1>
+    <p style="color:var(--ink-soft);font-size:17px;line-height:1.6;margin-bottom:8px">
+      Wir vergleichen zwei Text-to-Speech-Modelle. Du hörst ${order.length} kurze Paare —
+      jeweils Variante <strong>A</strong> und <strong>B</strong> mit demselben Satz.
+      Der gesprochene Satz wird dir dabei angezeigt.
+    </p>
+    <p style="color:var(--ink-soft);font-size:17px;line-height:1.6">
+      Wähle pro Paar, welche Variante natürlicher klingt, und bewerte, wie deutlich der
+      Unterschied ist. Manche Paare können auch identisch klingen — dann wähle
+      „Kein hörbarer Unterschied". Dauer: ca. 8–10 Minuten. Die Teilnahme ist anonym.
+    </p>
+    <button class="btn-primary" style="margin-top:28px" onclick="startSurvey()">Umfrage starten →</button>
+    <p class="note" style="margin-top:20px">🎧 Kopfhörer empfohlen</p>`;
+}
+function startSurvey() { step = 0; choice = null; rating = 5; renderQuestion(); }
+
+function renderQuestion() {
+  stopAudio();
+  const s = order[step];
+  const progress = (step / order.length) * 100;
+  app.className = "";
+  app.innerHTML = `
+    <div class="progress-row">
+      <span style="font-size:13px;font-weight:600;color:var(--ink-soft);white-space:nowrap">${step + 1} / ${order.length}</span>
+      <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+    </div>
+    <h2 style="font-size:26px;margin-bottom:6px">Höre beide Varianten an</h2>
+    <p style="color:var(--ink-soft);font-size:15px;margin:0 0 16px">Beide sprechen diesen Satz — du kannst beliebig oft abspielen:</p>
+    <div class="sentence">„${esc(s.text)}"</div>
+    <div class="pair">
+      ${["A", "B"].map((L) => `
+        <div class="audio-card ${choice === L ? "selected" : ""}" id="card${L}">
+          <div class="top">
+            <span class="letter">${L}</span>
+            <button class="play-btn ${playing === L ? "playing" : ""}" onclick="togglePlay('${L}')" aria-label="Variante ${L} abspielen oder pausieren" id="play${L}">${playing === L ? pauseIcon : playIcon}</button>
+          </div>
+          <div id="wave${L}">${waveHTML(false, 28, 36, choice === L ? "var(--accent)" : "#98A2B3")}</div>
+          <button class="choose-btn" onclick="setChoice('${L}')">${choice === L ? "✓ Klingt besser" : L + " klingt besser"}</button>
+        </div>`).join("")}
+    </div>
+    <button class="equal-btn ${choice === "equal" ? "selected" : ""}" onclick="setChoice('equal')">Kein hörbarer Unterschied</button>
+    <div id="ratingSlot"></div>
+    <div style="margin-top:28px">
+      <button class="btn-primary" id="nextBtn" onclick="next()" ${choice ? "" : "disabled"}>
+        ${step + 1 === order.length ? "Abschließen" : "Weiter"} →
+      </button>
+    </div>`;
+  renderRating();
+}
+
+function renderRating() {
+  const slot = document.getElementById("ratingSlot");
+  if (choice !== "A" && choice !== "B") { slot.innerHTML = ""; return; }
+  slot.innerHTML = `
+    <div class="rating-box">
+      <p style="font-size:15px;font-weight:600;margin-bottom:4px">Wie deutlich klingt ${choice} besser?</p>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:16px">1 = kaum besser · 10 = deutlich besser</p>
+      <input type="range" min="1" max="10" value="${rating}" oninput="rating=+this.value;document.getElementById('rval').textContent=this.value" aria-label="Bewertung von 1 bis 10">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)">
+        <span>1</span><span id="rval" style="font-size:20px;font-weight:700;color:var(--accent)">${rating}</span><span>10</span>
+      </div>
+    </div>`;
+}
+
+function setChoice(c) {
+  choice = c;
+  ["A", "B"].forEach((L) => {
+    const card = document.getElementById("card" + L);
+    card.classList.toggle("selected", choice === L);
+    card.querySelector(".choose-btn").textContent = choice === L ? "✓ Klingt besser" : L + " klingt besser";
+  });
+  document.querySelector(".equal-btn").classList.toggle("selected", c === "equal");
+  document.getElementById("nextBtn").disabled = false;
+  renderRating();
+}
+
+function togglePlay(L) {
+  const s = order[step];
+  if (playing === L) { stopAudio(); updatePlayUI(); return; }
+  stopAudio();
+  const url = L === "A" ? s.a : s.b;
+  audio = new Audio(url);
+  audio.onended = () => { playing = null; updatePlayUI(); };
+  audio.onerror = () => { playing = null; updatePlayUI(); alert("Audio-Datei konnte nicht geladen werden: " + url); };
+  audio.play().catch(() => { playing = null; updatePlayUI(); });
+  playing = L;
+  updatePlayUI();
+}
+function updatePlayUI() {
+  ["A", "B"].forEach((L) => {
+    const btn = document.getElementById("play" + L);
+    if (!btn) return;
+    btn.classList.toggle("playing", playing === L);
+    btn.innerHTML = playing === L ? pauseIcon : playIcon;
+    document.getElementById("wave" + L).innerHTML = waveHTML(playing === L, 28, 36, choice === L ? "var(--accent)" : "#98A2B3");
+  });
+}
+
+async function next() {
+  stopAudio();
+  const s = order[step];
+  // Buchstabe → Modell auflösen (ft = Seite des getunten Modells lt. key.csv)
+  let resolved;
+  if (choice === "equal") resolved = "equal";
+  else if (s.type === "attention") resolved = "identical-" + choice; // sollte nicht passieren, wird als nicht bestanden gewertet
+  else resolved = choice === s.ft ? "tuned" : "baseline";
+  answers.push({ sampleId: s.id, type: s.type, letter: choice, choice: resolved, rating: choice === "equal" ? null : rating });
+  choice = null; rating = 5;
+
+  if (step + 1 < order.length) { step++; renderQuestion(); return; }
+
+  app.innerHTML = `<p style="color:var(--ink-soft)">Speichert…</p>`;
+  try { await saveResponse(answers); renderDone(false); }
+  catch (e) { console.error(e); renderDone(true); }
+}
+
+function renderDone(failed) {
+  step = order.length;
+  app.innerHTML = `
+    <div style="max-width:560px;margin:48px auto 0;text-align:center">
+      <div style="font-size:56px;margin-bottom:12px">${failed ? "⚠️" : "✅"}</div>
+      <h1 style="font-size:34px;margin-bottom:12px">${failed ? "Fast geschafft…" : "Danke fürs Mithören!"}</h1>
+      <p style="color:var(--ink-soft);font-size:16px;line-height:1.6">
+        ${failed
+          ? "Deine Antworten konnten nicht gespeichert werden (Verbindungsproblem). Bitte lade die Seite neu und versuche es noch einmal."
+          : "Deine Antworten wurden anonym gespeichert und helfen uns, unser Modell zu verbessern."}
+      </p>
+    </div>`;
+}
+
+// Warnung anzeigen, solange die Datenbank noch nicht konfiguriert ist
+if (CFG.supabaseUrl.includes("DEIN-PROJEKT") || CFG.supabaseAnonKey.includes("DEIN-ANON-KEY")) {
+  const warn = document.createElement("div");
+  warn.className = "error-banner";
+  warn.style.margin = "16px 20px 0";
+  warn.textContent = "⚠️ Hinweis für Admins: In config.js sind noch die Supabase-Platzhalter eingetragen — Antworten können so nicht gespeichert werden. Anleitung siehe README.md, Schritt 2.";
+  document.body.insertBefore(warn, document.querySelector("main"));
+}
+
+renderIntro();
+</script>
+</body>
+</html>
